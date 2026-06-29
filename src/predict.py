@@ -32,8 +32,6 @@ def predict_matches():
     remaining = remaining.dropna(subset=["home_team", "away_team"])
     model = load_model()
 
-    features = ["elo_diff", "home_elo", "away_elo", "home_form", "away_form", "h2h", "neutral"]
-
     predictions = []
     for _, row in remaining.iterrows():
         home = row["home_team"]
@@ -60,6 +58,11 @@ def predict_matches():
 
         proba = model.predict_proba(X)[0]
         pred = model.predict(X)[0]
+
+        # No draws in knockout stage
+        if pred == 1:
+            pred = 0 if proba[0] > proba[2] else 2
+
         outcome_map = {0: "Home Win", 1: "Draw", 2: "Away Win"}
 
         predictions.append({
