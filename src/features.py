@@ -88,6 +88,9 @@ def build_features(results_df, elo_ratings):
 
 if __name__ == "__main__":
     results = pd.read_csv("data/results.csv")
+    results["date"] = pd.to_datetime(results["date"])
+    results = results[results["date"] >= "2000-01-01"]  # filter to modern era
+
     elo_df = pd.read_csv("data/elo_ratings.csv")
     elo_ratings = dict(zip(elo_df["team"], elo_df["elo_rating"]))
 
