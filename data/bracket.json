@@ -1,0 +1,229 @@
+{
+  "R32": [
+    {
+      "home": "South Africa",
+      "away": "Canada",
+      "winner": "Canada",
+      "confidence": 100.0,
+      "decided": true
+    },
+    {
+      "home": "Brazil",
+      "away": "Japan",
+      "winner": "Brazil",
+      "confidence": 100.0,
+      "decided": true
+    },
+    {
+      "home": "Germany",
+      "away": "Paraguay",
+      "winner": "Paraguay",
+      "confidence": 100.0,
+      "decided": true
+    },
+    {
+      "home": "Netherlands",
+      "away": "Morocco",
+      "winner": "Morocco",
+      "confidence": 100.0,
+      "decided": true
+    },
+    {
+      "home": "Ivory Coast",
+      "away": "Norway",
+      "winner": "Norway",
+      "confidence": 46.3,
+      "decided": false
+    },
+    {
+      "home": "France",
+      "away": "Sweden",
+      "winner": "France",
+      "confidence": 59.9,
+      "decided": false
+    },
+    {
+      "home": "Mexico",
+      "away": "Ecuador",
+      "winner": "Ecuador",
+      "confidence": 39.9,
+      "decided": false
+    },
+    {
+      "home": "England",
+      "away": "Congo DR",
+      "winner": "England",
+      "confidence": 62.3,
+      "decided": false
+    },
+    {
+      "home": "Belgium",
+      "away": "Senegal",
+      "winner": "Senegal",
+      "confidence": 31.1,
+      "decided": false
+    },
+    {
+      "home": "United States",
+      "away": "Bosnia-Herzegovina",
+      "winner": "United States",
+      "confidence": 61.3,
+      "decided": false
+    },
+    {
+      "home": "Spain",
+      "away": "Austria",
+      "winner": "Spain",
+      "confidence": 49.9,
+      "decided": false
+    },
+    {
+      "home": "Portugal",
+      "away": "Croatia",
+      "winner": "Croatia",
+      "confidence": 31.6,
+      "decided": false
+    },
+    {
+      "home": "Switzerland",
+      "away": "Algeria",
+      "winner": "Switzerland",
+      "confidence": 28.7,
+      "decided": false
+    },
+    {
+      "home": "Australia",
+      "away": "Egypt",
+      "winner": "Egypt",
+      "confidence": 43.3,
+      "decided": false
+    },
+    {
+      "home": "Argentina",
+      "away": "Cape Verde Islands",
+      "winner": "Argentina",
+      "confidence": 80.9,
+      "decided": false
+    },
+    {
+      "home": "Colombia",
+      "away": "Ghana",
+      "winner": "Colombia",
+      "confidence": 54.6,
+      "decided": false
+    }
+  ],
+  "R16": [
+    {
+      "home": "Canada",
+      "away": "Brazil",
+      "winner": "Brazil",
+      "confidence": 64.5,
+      "decided": false
+    },
+    {
+      "home": "Paraguay",
+      "away": "Morocco",
+      "winner": "Morocco",
+      "confidence": 55.1,
+      "decided": false
+    },
+    {
+      "home": "Norway",
+      "away": "France",
+      "winner": "France",
+      "confidence": 59.6,
+      "decided": false
+    },
+    {
+      "home": "Ecuador",
+      "away": "England",
+      "winner": "England",
+      "confidence": 54.2,
+      "decided": false
+    },
+    {
+      "home": "Senegal",
+      "away": "United States",
+      "winner": "United States",
+      "confidence": 38.0,
+      "decided": false
+    },
+    {
+      "home": "Spain",
+      "away": "Croatia",
+      "winner": "Spain",
+      "confidence": 38.3,
+      "decided": false
+    },
+    {
+      "home": "Switzerland",
+      "away": "Egypt",
+      "winner": "Switzerland",
+      "confidence": 34.4,
+      "decided": false
+    },
+    {
+      "home": "Argentina",
+      "away": "Colombia",
+      "winner": "Colombia",
+      "confidence": 30.6,
+      "decided": false
+    }
+  ],
+  "QF": [
+    {
+      "home": "Brazil",
+      "away": "Morocco",
+      "winner": "Morocco",
+      "confidence": 33.8,
+      "decided": false
+    },
+    {
+      "home": "France",
+      "away": "England",
+      "winner": "France",
+      "confidence": 37.9,
+      "decided": false
+    },
+    {
+      "home": "United States",
+      "away": "Spain",
+      "winner": "Spain",
+      "confidence": 67.0,
+      "decided": false
+    },
+    {
+      "home": "Switzerland",
+      "away": "Colombia",
+      "winner": "Colombia",
+      "confidence": 53.7,
+      "decided": false
+    }
+  ],
+  "SF": [
+    {
+      "home": "Morocco",
+      "away": "France",
+      "winner": "France",
+      "confidence": 53.1,
+      "decided": false
+    },
+    {
+      "home": "Spain",
+      "away": "Colombia",
+      "winner": "Colombia",
+      "confidence": 35.4,
+      "decided": false
+    }
+  ],
+  "F": [
+    {
+      "home": "France",
+      "away": "Colombia",
+      "winner": "France",
+      "confidence": 29.4,
+      "decided": false
+    }
+  ]
+}

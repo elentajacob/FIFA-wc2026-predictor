@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import json
 
 st.set_page_config(page_title="FIFA 2026 Predictor", page_icon="⚽", layout="wide")
 
@@ -77,9 +78,9 @@ c4.markdown(f'<div class="stat-card"><div class="stat-number" style="color:#c9a8
 st.markdown("<br>", unsafe_allow_html=True)
 
 # TABS
-tab1, tab2, tab3 = st.tabs(["🔮   Predictions", "📊   ELO Rankings", "✅   Completed"])
+tab1, tab2, tab3, tab4 = st.tabs(["🔮   Predictions", "🏆   Bracket", "📊   ELO Rankings", "✅   Completed"])
 
-# TAB 1
+# TAB 1: PREDICTIONS
 with tab1:
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown('<p class="section-eyebrow">Upcoming Schedule · Match Outcome Models</p>', unsafe_allow_html=True)
@@ -132,8 +133,103 @@ with tab1:
 </div>"""
         st.markdown(html, unsafe_allow_html=True)
 
-# TAB 2
+# TAB 2: BRACKET
 with tab2:
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown('<p class="section-eyebrow">Projected Tournament Bracket · Round of 32 to Final</p>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="background:#0c0c0c; border:1px solid #1a1a1a; border-left:3px solid #c9a84c; padding:14px 20px; margin-bottom:24px; font-family:'Inter',sans-serif; font-size:12px; color:#888; letter-spacing:0.5px;">
+        ⚠️ Rounds beyond a team's next confirmed match are model projections, not confirmed fixtures. Real bracket pairings depend on actual results as the tournament progresses.
+    </div>
+    """, unsafe_allow_html=True)
+    try:
+        with open("data/championship_odds.json") as f:
+            odds = json.load(f)
+
+        st.markdown('<p style="font-family:Inter,sans-serif;font-size:11px;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:16px;">Championship Odds · 1,000 Simulated Tournaments</p>', unsafe_allow_html=True)
+
+        odds_cols = st.columns(5)
+        for i, o in enumerate(odds[:10]):
+            col = odds_cols[i % 5]
+            rank_color = "#c9a84c" if i == 0 else "#888" if i < 3 else "#555"
+            col.markdown(f"""
+            <div style="background:#0c0c0c; border:1px solid #1a1a1a; border-top:2px solid {rank_color}; padding:16px 14px; margin-bottom:12px; text-align:center;">
+                <div style="font-family:'Inter',sans-serif; font-size:9px; letter-spacing:1px; color:#555;">#{i+1}</div>
+                <div style="font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; color:#fff; margin:4px 0;">{o['team']}</div>
+                <div style="font-family:'Bebas Neue',sans-serif; font-size:26px; color:{rank_color};">{o['win_pct']}%</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        pass
+
+    try:
+        with open("data/bracket.json") as f:
+            bracket = json.load(f)
+
+        def match_box(m):
+            home = m["home"] or "TBD"
+            away = m["away"] or "TBD"
+            winner = m["winner"]
+            decided = m.get("decided", False)
+            home_bold = "color:#ffffff;font-weight:700;" if winner == home else "color:#555;"
+            away_bold = "color:#ffffff;font-weight:700;" if winner == away else "color:#555;"
+            tag = "FINAL RESULT" if decided else (f"{m['confidence']}% CONFIDENCE" if m.get('confidence') else "")
+            tag_color = "#4ade80" if decided else "#c9a84c"
+            return f"""<div style="background:#0c0c0c;border:1px solid #1a1a1a;padding:12px 16px;margin-bottom:8px;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;{home_bold}">{home}</div>
+<div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;{away_bold}">{away}</div>
+<div style="font-family:'Inter',sans-serif;font-size:9px;letter-spacing:1px;color:{tag_color};margin-top:5px;text-transform:uppercase;">{tag}</div>
+</div>"""
+
+        r32, r16, qf, sf, final = bracket["R32"], bracket["R16"], bracket["QF"], bracket["SF"], bracket["F"][0]
+
+        st.markdown('<p style="font-family:Inter,sans-serif;font-size:11px;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;">Top Half</p>', unsafe_allow_html=True)
+        tcols = st.columns(4)
+        with tcols[0]:
+            st.caption("ROUND OF 32")
+            for m in r32[:8]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with tcols[1]:
+            st.caption("ROUND OF 16")
+            for m in r16[:4]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with tcols[2]:
+            st.caption("QUARTERFINAL")
+            for m in qf[:2]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with tcols[3]:
+            st.caption("SEMIFINAL")
+            st.markdown(match_box(sf[0]), unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<p style="font-family:Inter,sans-serif;font-size:11px;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;">Bottom Half</p>', unsafe_allow_html=True)
+        bcols = st.columns(4)
+        with bcols[0]:
+            st.caption("ROUND OF 32")
+            for m in r32[8:16]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with bcols[1]:
+            st.caption("ROUND OF 16")
+            for m in r16[4:8]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with bcols[2]:
+            st.caption("QUARTERFINAL")
+            for m in qf[2:4]: st.markdown(match_box(m), unsafe_allow_html=True)
+        with bcols[3]:
+            st.caption("SEMIFINAL")
+            st.markdown(match_box(sf[1]), unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        champion = final["winner"] or "TBD"
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,#1a1508,#0c0c0c);border:2px solid #c9a84c;padding:32px;text-align:center;max-width:500px;margin:0 auto;">
+            <div style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;color:#c9a84c;margin-bottom:10px;">PREDICTED WORLD CUP CHAMPION</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:3px;color:#ffffff;">🏆 {champion}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    except FileNotFoundError:
+        st.warning("Run `python src/bracket.py` first to generate the bracket projection.")
+
+# TAB 3: ELO RANKINGS
+with tab3:
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown('<p class="section-eyebrow">Current Global ELO Ratings Matrix</p>', unsafe_allow_html=True)
 
@@ -141,34 +237,22 @@ with tab2:
     top_elo = elo.head(top_n).sort_values("elo_rating")
 
     fig = go.Figure(go.Bar(
-        x=top_elo["elo_rating"],
-        y=top_elo["team"],
-        orientation="h",
-        marker=dict(
-            color=top_elo["elo_rating"],
-            colorscale=[[0, "#161616"], [0.7, "#a68632"], [1, "#c9a84c"]],
-            showscale=False
-        ),
-        text=top_elo["elo_rating"].round(0).astype(int),
-        textposition="outside",
+        x=top_elo["elo_rating"], y=top_elo["team"], orientation="h",
+        marker=dict(color=top_elo["elo_rating"], colorscale=[[0, "#161616"], [0.7, "#a68632"], [1, "#c9a84c"]], showscale=False),
+        text=top_elo["elo_rating"].round(0).astype(int), textposition="outside",
         textfont=dict(color="#888888", size=11, family="Inter")
     ))
-
     fig.update_layout(
-        paper_bgcolor="#050505",
-        plot_bgcolor="#050505",
-        font=dict(color="#ffffff", family="Inter"),
-        height=max(400, top_n * 28),
-        margin=dict(l=20, r=60, t=20, b=20),
+        paper_bgcolor="#050505", plot_bgcolor="#050505", font=dict(color="#ffffff", family="Inter"),
+        height=max(400, top_n * 28), margin=dict(l=20, r=60, t=20, b=20),
         xaxis=dict(showgrid=True, gridcolor="#111111", tickfont=dict(color="#444444"),
                    range=[elo["elo_rating"].min() - 50, elo["elo_rating"].max() + 100]),
         yaxis=dict(tickfont=dict(color="#ffffff", size=12))
     )
-
     st.plotly_chart(fig, use_container_width=True)
 
-# TAB 3
-with tab3:
+# TAB 4: COMPLETED
+with tab4:
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown('<p class="section-eyebrow">Match History Ledger & Realised Scores</p>', unsafe_allow_html=True)
 
@@ -178,17 +262,11 @@ with tab3:
     for _, row in completed_sorted.iterrows():
         hg = int(row["home_goals"]) if pd.notna(row["home_goals"]) else 0
         ag = int(row["away_goals"]) if pd.notna(row["away_goals"]) else 0
-
-        if hg > ag:
-            h_style, a_style = "color:#ffffff;", "color:#333333;"
-        elif ag > hg:
-            h_style, a_style = "color:#333333;", "color:#ffffff;"
-        else:
-            h_style = a_style = "color:#c9a84c;"
-
+        if hg > ag: h_style, a_style = "color:#ffffff;", "color:#333333;"
+        elif ag > hg: h_style, a_style = "color:#333333;", "color:#ffffff;"
+        else: h_style = a_style = "color:#c9a84c;"
         date_str = pd.to_datetime(row["date"]).strftime("%b %d")
-        home = row['home_team']
-        away = row['away_team']
+        home, away = row['home_team'], row['away_team']
 
         html = f"""<div class="match-card" style="padding:16px 32px;">
 <div style="display:flex;align-items:center;gap:16px;">
