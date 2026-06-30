@@ -78,7 +78,7 @@ c4.markdown(f'<div class="stat-card"><div class="stat-number" style="color:#c9a8
 st.markdown("<br>", unsafe_allow_html=True)
 
 # TABS
-tab1, tab2, tab3, tab4 = st.tabs(["🔮   Predictions", "🏆   Bracket", "📊   ELO Rankings", "✅   Completed"])
+tab1, tab2, tab3, tab4 = st.tabs(["◆   Predictions", "♛   Bracket", "▤   ELO Rankings", "●   Completed"])
 
 # TAB 1: PREDICTIONS
 with tab1:
